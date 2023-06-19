@@ -52,13 +52,14 @@ func New(id int64, shifts []Shift, weekdays [7]bool) Assigment {
 
 func main() {
 	as := []Assigment{
-		New(1, []Shift{{"08:30", "12:00"}}, [7]bool{false, true, false, true, false, true, false}), // 8h30-12h | t2, t4, t6
-		New(2, []Shift{{"12:00", "18:00"}}, [7]bool{false, true, false, true, false, true, false}), // 12h-18h | t2, t4, t6
-		New(3, []Shift{{"08:00", "18:00"}}, [7]bool{true, false, true, false, true, false, true}),  // 8h-18h | cn, t3, t5
-		New(4, []Shift{{"17:30", "22:00"}}, [7]bool{false, true, false, true, false, true, false}), // 17h30-22h | t2, t4, t6 => must duplicate
+		New(1, []Shift{{"08:30", "12:00"}, {"13:00", "18:00"}}, [7]bool{false, true, false, true, false, true, false}), // 8h30-12h 13h-18h | t2, t4, t6
+		New(2, []Shift{{"18:00", "22:00"}}, [7]bool{false, true, false, true, false, true, false}),                     // 18h-22h | t2, t4, t6
+		New(3, []Shift{{"08:00", "18:00"}}, [7]bool{true, false, true, false, true, false, true}),                      // 8h-18h | cn, t3, t5, t7
+		New(4, []Shift{{"21:00", "23:00"}}, [7]bool{false, true, false, true, false, true, false}),                     // 21h-23h | t2, t4, t6 => must duplicate
 	}
 
 	nwd := time.Now().Weekday()
+	nwd = 3
 	hsBf := as[0].HashedShifts[nwd]
 	fmt.Printf("\n////////////////////START///////////////////\n")
 	for idx := 1; idx < len(as); idx++ {
